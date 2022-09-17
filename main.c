@@ -3,7 +3,7 @@
 #include "hardware/gpio.h"
 #include "pico/binary_info.h"
 
-int LED_PIN = 25;
+const int LED_PIN = 25;
 
 int main ()
 {
@@ -12,7 +12,7 @@ int main ()
 
     stdio_init_all();
 
-    gpio_init();
+    gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
 
     while(1)
