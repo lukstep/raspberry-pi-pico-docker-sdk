@@ -3,9 +3,7 @@
 ## Run Docker container
 
 ```
-cd ./docker
-
-docker build . --tag pico-sdk
+docker build ./docker --tag pico-sdk
 
 docker run -d -it --name pico-sdk --mount type=bind,source=${PWD},target=/home/dev pico-sdk
 
