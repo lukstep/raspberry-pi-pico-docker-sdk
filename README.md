@@ -62,11 +62,9 @@ docker run -d -it --name pico-sdk --mount type=bind,source=${PWD},target=/home/d
 docker exec -it pico-sdk /bin/sh
 ```
 
-4. Click the green button in the lower left corner of VSCode and select options: Attach to Running Container...
+4. When the container is launched, go to VSCode, click the green button in the lower left corner of VSCode and select options: Attach to Running Container...
 
-![image-2](https://user-images.githubusercontent.com/20487002/201382466-0204a11c-8487-4da5-8a3c-2c9cc233333c.png)
-
-![image-3](https://user-images.githubusercontent.com/20487002/201382561-41e4c75e-3424-4c50-99ac-f6bc76ec6892.png)
+![image-2](https://user-images.githubusercontent.com/20487002/201471437-b12dc225-28ab-4ebd-b694-fc7058d34e2e.png)
 
 5. Select the SDK container.
 
@@ -86,7 +84,7 @@ docker exec -it pico-sdk /bin/sh
 
 ### Pico SDK aware Intellisense
 
-For an IntelliSense that will be aware of Raspberry Pi Pico SDK dependencies, we will use [Clangd](https://clangd.llvm.org). Clangd is a language server provided by the LLVM project. To Setup Clang as Intellisense engine follow instruction below:
+For an IntelliSense that will be aware of Raspberry Pi Pico SDK dependencies, we will use [Clangd](https://clangd.llvm.org). Clangd is a C/C++ language server provided by the LLVM project. To Setup Clang as Intellisense engine follow instruction below:
 
 1. To begin with, you need to install the server itself (Clangd is not installed by default in the SDK container image), to do this in the terminal call the command:
 
@@ -132,7 +130,7 @@ make
 
 5. Now IntelliSense should work!. Now you should see a prompt when you start typing. If you hover your cursor over a function from the SDK you should see its documentation, You can go to the function definition by pressing F12.
 
-![image-3](https://user-images.githubusercontent.com/20487002/201468773-61b77d65-3a9b-4e18-b5f1-a294e1ad0ec3.png)
+![image-3](https://user-images.githubusercontent.com/20487002/201469349-b8a9721f-4169-4bf6-a8d6-d459f8f97180.png)
 
 ![image-4](https://user-images.githubusercontent.com/20487002/201468782-50fc6abb-1f82-49d5-8b93-631dd30f1f58.png)
 
