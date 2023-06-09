@@ -54,7 +54,7 @@ Follow the instruction below to set up VSCode:
 
 2. Open the terminal and go to the projects you want to open in VSCode.
 
-3. Pool SDK image from Docker HUB and run SDK container via the following command. The container must be running while you attach to it via VSCode.
+3. Pull SDK image from Docker HUB and run SDK container via the following command. The container must be running while you attach to it via VSCode.
 
 ```
 docker run -d -it --name pico-sdk --mount type=bind,source=${PWD},target=/home/dev lukstep/raspberry-pi-pico-sdk:latest
