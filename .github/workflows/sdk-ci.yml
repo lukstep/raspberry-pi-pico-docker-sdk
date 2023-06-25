@@ -1,0 +1,47 @@
+name: Raspberry PI Pico Docker SDK CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  release:
+    types: [published]
+
+env:
+  TEST_TAG: pico_test_sdk
+
+jobs:
+  sdk_container:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build SDK
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          load: true
+          tags: ${{ env.TEST_TAG }}
+      - name: Test SDK
+        run: bash ./test_sdk.sh ${{ env.TEST_TAG }}
+      - name: Log into Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+      - name: Extract SDK metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: lukstep/raspberry-pi-pico-sdk
+      - name: Push SDK image
+        if: github.event_name == 'release' && github.event.action == 'published'
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
