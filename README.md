@@ -1,4 +1,4 @@
-[![Raspberry PI Pico Docker SDK CI](https://github.com/lukstep/raspberry-pi-pico-docker-sdk/actions/workflows/sdk-ci.yml/badge.svg?branch=main)](https://github.com/lukstep/raspberry-pi-pico-docker-sdk/actions/workflows/sdk-ci.yml)
+[![Raspberry PI Pico Docker SDK CI](https://github.com/lukstep/raspberry-pi-pico-docker-sdk/actions/workflows/sdk-ci.yml/badge.svg)](https://github.com/lukstep/raspberry-pi-pico-docker-sdk/actions/workflows/sdk-ci.yml)
 
 # Raspberry Pi Pico Docker SDK
 
