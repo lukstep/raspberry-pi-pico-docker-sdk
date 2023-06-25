@@ -15,14 +15,14 @@ RUN apk update && \
 
 # Raspberry Pi Pico SDK
 ARG SDK_PATH=/usr/share/pico_sdk
-RUN git clone --depth 1 --branch 1.5.0 https://github.com/raspberrypi/pico-sdk $SDK_PATH && \
+RUN git clone --depth 1 --branch 1.5.1 https://github.com/raspberrypi/pico-sdk $SDK_PATH && \
     cd $SDK_PATH && \
     git submodule update --init
 
 ENV PICO_SDK_PATH=$SDK_PATH
 
 # Picotool installation
-RUN git clone --depth 1 --branch 1.1.1 https://github.com/raspberrypi/picotool.git /home/picotool && \
+RUN git clone --depth 1 --branch 1.1.2 https://github.com/raspberrypi/picotool.git /home/picotool && \
     cd /home/picotool && \
     mkdir build && \
     cd build && \
