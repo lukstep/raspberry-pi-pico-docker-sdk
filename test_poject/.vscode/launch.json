@@ -1,0 +1,25 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Pico debug",
+            "cwd": "${workspaceFolder}",
+            "gdbPath": "/usr/bin/gdb-multiarch",
+            "executable": "/home/dev/build/sample.elf",
+            "request": "launch",
+            "type": "cortex-debug",
+            "runToEntryPoint": "main",
+            "servertype": "external",
+            "gdbTarget": "host.docker.internal:3333",
+            "overrideLaunchCommands": [
+                "monitor adapter speed 5000",
+                "monitor reset init",
+                "load ${command:cmake.launchTargetPath}"
+            ],
+
+        }
+    ]
+}

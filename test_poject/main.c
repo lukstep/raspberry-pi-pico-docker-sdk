@@ -3,12 +3,11 @@
 #include "hardware/gpio.h"
 #include "pico/binary_info.h"
 
-const int LED_PIN = 25;
+const int LED_PIN = 0;
 
 int main ()
 {
-    bi_decl(bi_program_description("Sample binary"));
-    bi_decl(bi_1pin_with_name(LED_PIN, "on-board PIN"));
+    int test = 0;
 
     stdio_init_all();
 
@@ -20,8 +19,9 @@ int main ()
         gpio_put(LED_PIN, 0);
         sleep_ms(250);
         gpio_put(LED_PIN, 1);
-        puts("Hello Word\n");
+        printf("Hello Word %d\n", test);
         sleep_ms(1000);
+        test++;
     }
 }
 
