@@ -26,4 +26,6 @@ target_link_libraries(freertos_demo
                       FreeRTOS-Kernel
                       FreeRTOS-Kernel-Heap4)
 
+pico_enable_stdio_usb(freertos_demo 1)
+pico_enable_stdio_uart(freertos_demo 1)
 pico_add_extra_outputs(freertos_demo)

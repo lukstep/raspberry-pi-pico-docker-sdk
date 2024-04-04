@@ -16,30 +16,26 @@ void vApplicationStackOverflowHook( TaskHandle_t pxTask, char *pcTaskName ) {}
 void vApplicationTickHook( void ) {}
 void vApplicationMallocFailedHook( void ) {}
 
+constexpr int LED_PIN = 25;
+
 void vBlink(void* unused_arg) {
+    stdio_init_all();
+    for (;;) {
 
-   for (;;) {
-
-      gpio_put(PICO_DEFAULT_LED_PIN, 1);
-
-      vTaskDelay(250);
-
-      gpio_put(PICO_DEFAULT_LED_PIN, 0);
-
-      vTaskDelay(250);
-
-   }
-
+        gpio_put(LED_PIN, 1);
+        vTaskDelay(250);
+        gpio_put(LED_PIN, 0);
+        puts("Hello FreeRTOS\n");
+        vTaskDelay(250);
+    }
 }
 
 int main() {
+    gpio_init(LED_PIN);
 
-   gpio_init(PICO_DEFAULT_LED_PIN);
+    gpio_set_dir(LED_PIN, GPIO_OUT);
 
-   gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
+    xTaskCreate(vBlink, "Blink", 128, NULL, 1, NULL);
 
-   xTaskCreate(vBlink, "Blink", 128, NULL, 1, NULL);
-
-   vTaskStartScheduler();
-
+    vTaskStartScheduler();
 }
