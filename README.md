@@ -2,7 +2,7 @@
 
 # Raspberry Pi Pico Docker SDK
 
-A lightweight SDK environment for Raspberry Pi Pico in a Docker container.
+A SDK environment for Raspberry Pi Pico 1 and 2 in a Docker container.
 
 ## Pulling the Image from Docker Hub and Running
 
@@ -50,8 +50,8 @@ Follow [this](https://code.visualstudio.com/docs/devcontainers/tutorial#_prerequ
 
 #### Using the Dev Container for Pico IDE
 
-- Clone [pico-dev-container](https://github.com/lukstep/pico-dev-container/tree/main) repository.
-- Open `pico-dev-container` folder in Visual Studio Code.
+- Clone [pico-template-project](https://github.com/lukstep/pico-template-project) repository.
+- Open `pico-template-project` folder in Visual Studio Code.
 - In VSCode, click the button in the bottom left corner of VSCode and select: Reopen in Container...
 ![image-1](https://github.com/lukstep/raspberry-pi-pico-docker-sdk/assets/20487002/f1f06bca-cb0b-4c2d-bf4c-611ef004e70a)
 - Build the project.
@@ -59,6 +59,9 @@ Follow [this](https://code.visualstudio.com/docs/devcontainers/tutorial#_prerequ
 ![image-1](https://github.com/lukstep/raspberry-pi-pico-docker-sdk/assets/20487002/ed367c06-aa9f-440a-9ca2-ddfbd7bdd266)
 
 ## Pico Memory Flashing and Debugging via Pico Probe and OpenOCD
+
+> [!WARNING]  
+> OpenOCD not support RP2350 (Pico 2). Currently this part is only valid for RP2040 boards (Pico 1).
 
 To work efficiently on the project, we need the ability to upload firmware to the microcontroller, debug, and communicate through the serial port. The Raspberry Pi Pico board itself allows for software uploads, but this process is not very convenient or efficient for larger projects. The Pico Probe extends the capabilities of the Raspberry Pi Pico board to include fast firmware uploads to the microcontroller's memory, debugging via Serial Wire Debug (SWD), and it also serves as a USB UART converter.
 
@@ -147,5 +150,7 @@ Refer [here](docs/vscode_manual_setup.md) for step-by-step instruction
 ## References
 
 [Raspberry Pi Debug Probe](https://www.raspberrypi.com/documentation/microcontrollers/debug-probe.html)
+
+[Raspberry Pi Pico C/C++ SDK](https://datasheets.raspberrypi.com/pico/raspberry-pi-pico-c-sdk.pdf)
 
 [OpenOCD project page](https://openocd.org)

@@ -1,21 +1,29 @@
-FROM alpine:3.17.0
+FROM ubuntu:24.10 AS gcc_build
 
-# Install toolchain
-RUN apk update && \
-    apk upgrade && \
-    apk add git \
-            python3 \
-            py3-pip \
-            cmake \
-            build-base \
-            libusb-dev \
-            bsd-compat-headers \
-            newlib-arm-none-eabi \
-            gcc-arm-none-eabi
+# Build GCC RISC-V
+COPY ./install_gcc.sh /home/install_gcc.sh
+RUN bash /home/install_gcc.sh
+
+FROM ubuntu:24.10 as sdk_setup
+
+RUN apt-get update -y && \
+    apt-get upgrade -y && \
+    apt-get install --no-install-recommends -y \
+                       git \
+                       ca-certificates \
+                       python3 \
+                       tar \
+                       build-essential \
+                       gcc-arm-none-eabi \
+                       libnewlib-arm-none-eabi \
+                       libstdc++-arm-none-eabi-newlib \
+                       cmake && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Raspberry Pi Pico SDK
 ARG SDK_PATH=/usr/local/picosdk
-RUN git clone --depth 1 --branch 1.5.1 https://github.com/raspberrypi/pico-sdk $SDK_PATH && \
+RUN git clone --depth 1 --branch 2.0.0 https://github.com/raspberrypi/pico-sdk $SDK_PATH && \
     cd $SDK_PATH && \
     git submodule update --init
 
@@ -30,11 +38,16 @@ RUN git clone --depth 1 --branch V11.0.1 https://github.com/FreeRTOS/FreeRTOS-Ke
 ENV FREERTOS_KERNEL_PATH=$FREERTOS_PATH
 
 # Picotool installation
-RUN git clone --depth 1 --branch 1.1.2 https://github.com/raspberrypi/picotool.git /home/picotool && \
+RUN git clone --depth 1 --branch 2.0.0 https://github.com/raspberrypi/picotool.git /home/picotool && \
     cd /home/picotool && \
     mkdir build && \
     cd build && \
     cmake .. && \
-    make && \
-    cp /home/picotool/build/picotool /bin/picotool && \
+    make -j$(nproc) && \
+    cmake --install . && \
     rm -rf /home/picotool
+
+# Install GCC RISC-V
+COPY --from=gcc_build /opt/riscv/gcc14-rp2350-no-zcmp /opt/riscv/gcc14-rp2350-no-zcmp
+ENV PATH="$PATH:/opt/riscv/gcc14-rp2350-no-zcmp/bin"
+
