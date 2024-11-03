@@ -4,7 +4,7 @@ FROM ubuntu:24.10 AS gcc_build
 COPY ./install_gcc.sh /home/install_gcc.sh
 RUN bash /home/install_gcc.sh
 
-FROM ubuntu:24.10 as sdk_setup
+FROM ubuntu:24.10 AS sdk_setup
 
 RUN apt-get update -y && \
     apt-get upgrade -y && \
