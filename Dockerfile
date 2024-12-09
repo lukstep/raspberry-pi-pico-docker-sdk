@@ -23,7 +23,7 @@ RUN apt-get update -y && \
 
 # Raspberry Pi Pico SDK
 ARG SDK_PATH=/usr/local/picosdk
-RUN git clone --depth 1 --branch 2.0.0 https://github.com/raspberrypi/pico-sdk $SDK_PATH && \
+RUN git clone --depth 1 --branch 2.1.0 https://github.com/raspberrypi/pico-sdk $SDK_PATH && \
     cd $SDK_PATH && \
     git submodule update --init
 
@@ -38,7 +38,7 @@ RUN git clone --depth 1 --branch V11.0.1 https://github.com/FreeRTOS/FreeRTOS-Ke
 ENV FREERTOS_KERNEL_PATH=$FREERTOS_PATH
 
 # Picotool installation
-RUN git clone --depth 1 --branch 2.0.0 https://github.com/raspberrypi/picotool.git /home/picotool && \
+RUN git clone --depth 1 --branch 2.1.0 https://github.com/raspberrypi/picotool.git /home/picotool && \
     cd /home/picotool && \
     mkdir build && \
     cd build && \
