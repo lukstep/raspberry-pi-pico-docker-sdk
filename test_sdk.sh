@@ -9,7 +9,7 @@ if [[ -z $1 ]]; then
     echo "Please provide an SDK image you want to test"
 fi
 
-declare -a boards=("pico" "pico_w" "pico2" "pico2_riscv")
+declare -a boards=("pico" "pico_w" "pico2" "pico2_riscv" "pico2_w" "pico2_w_riscv")
 
 
 docker run -d -it --name pico-sdk --mount type=bind,source="${PWD}"/test_poject,target=/home/dev "$1"
