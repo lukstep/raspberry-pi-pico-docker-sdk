@@ -20,6 +20,8 @@ do
     docker exec pico-sdk /bin/bash -c "rm -rf /home/dev/build"
     if [[ $board = pico2_riscv ]] ; then
         docker exec -i pico-sdk /bin/bash -c "cd /home/dev && mkdir build && cd build && cmake .. -DPICO_BOARD=pico2 -DPICO_PLATFORM=rp2350-riscv && make -j4"
+    elif [[ $board = pico2_w_riscv ]] ; then
+        docker exec -i pico-sdk /bin/bash -c "cd /home/dev && mkdir build && cd build && cmake .. -DPICO_BOARD=pico2_w -DPICO_PLATFORM=rp2350-riscv && make -j4"
     else
         docker exec -i pico-sdk /bin/bash -c "cd /home/dev && mkdir build && cd build && cmake .. -DPICO_BOARD=${board} && make -j4"
     fi
