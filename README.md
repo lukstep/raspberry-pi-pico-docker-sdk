@@ -82,7 +82,7 @@ The diagram below shows the environment topology:
 
 ![image-1](https://github.com/lukstep/raspberry-pi-pico-docker-sdk/assets/20487002/27bbb17d-5de4-4e41-9481-17a9e249e7b3)
 
-### Instal required tools
+### Install required tools
 
 To install OpenOCD on Linux, run the following command in a terminal:
 
