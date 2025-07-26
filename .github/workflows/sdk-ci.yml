@@ -19,8 +19,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       - name: Build SDK
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v6
         with:
           context: .
           load: true
@@ -28,7 +32,7 @@ jobs:
       - name: Test SDK
         run: bash ./test_sdk.sh ${{ env.TEST_TAG }}
       - name: Log into Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
@@ -39,9 +43,10 @@ jobs:
           images: lukstep/raspberry-pi-pico-sdk
       - name: Push SDK image
         if: github.event_name == 'release' && github.event.action == 'published'
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/amd64,linux/arm64
