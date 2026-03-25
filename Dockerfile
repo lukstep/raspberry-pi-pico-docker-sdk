@@ -1,25 +1,45 @@
-FROM ubuntu:24.10 AS gcc_build
-
-# Build GCC RISC-V
-COPY ./install_gcc.sh /home/install_gcc.sh
-RUN bash /home/install_gcc.sh
-
-FROM ubuntu:24.10 AS sdk_setup
+FROM ubuntu:24.04
 
 RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install --no-install-recommends -y \
-                       git \
-                       ca-certificates \
-                       python3 \
-                       tar \
-                       build-essential \
-                       gcc-arm-none-eabi \
-                       libnewlib-arm-none-eabi \
-                       libstdc++-arm-none-eabi-newlib \
-                       cmake && \
+        build-essential \
+        ca-certificates \
+        cmake \
+        gcc-arm-none-eabi \
+        git \
+        libnewlib-arm-none-eabi \
+        libstdc++-arm-none-eabi-newlib \
+        python3 \
+        tar \
+        wget && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+# RISC-V toolchain
+ARG RISCV_VERSION=15.2.0-1
+ARG TARGETARCH
+
+RUN if [ "$TARGETARCH" = "arm64" ]; then \
+        ARCH=linux-arm64; \
+    elif [ "$TARGETARCH" = "amd64" ]; then \
+        ARCH=linux-x64; \
+    else \
+        echo "Unsupported arch: $TARGETARCH" && exit 1; \
+    fi && \
+    wget -q https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v${RISCV_VERSION}/xpack-riscv-none-elf-gcc-${RISCV_VERSION}-${ARCH}.tar.gz \
+        -O /tmp/riscv.tar.gz && \
+    tar -xzf /tmp/riscv.tar.gz -C /opt && \
+    rm /tmp/riscv.tar.gz
+
+# Add toolchain to PATH
+ENV PATH="/opt/xpack-riscv-none-elf-gcc-${RISCV_VERSION}/bin:${PATH}"
+
+RUN TOOLCHAIN=/opt/xpack-riscv-none-elf-gcc-${RISCV_VERSION}/bin && \
+    for f in $TOOLCHAIN/riscv-none-elf-*; do \
+        name=$(basename $f | sed 's/riscv-none-elf/riscv32-unknown-elf/'); \
+        ln -s $f /usr/local/bin/$name; \
+    done
 
 # Raspberry Pi Pico SDK
 ARG SDK_PATH=/usr/local/picosdk
@@ -46,8 +66,3 @@ RUN git clone --depth 1 --branch 2.1.1 https://github.com/raspberrypi/picotool.g
     make -j$(nproc) && \
     cmake --install . && \
     rm -rf /home/picotool
-
-# Install GCC RISC-V
-COPY --from=gcc_build /opt/riscv/gcc14-rp2350-no-zcmp /opt/riscv/gcc14-rp2350-no-zcmp
-ENV PATH="$PATH:/opt/riscv/gcc14-rp2350-no-zcmp/bin"
-
