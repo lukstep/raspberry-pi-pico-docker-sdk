@@ -9,14 +9,18 @@ if [[ -z $1 ]]; then
     echo "Please provide an SDK image you want to test"
 fi
 
+if [[ -z $2 ]]; then
+    echo "Please provide an image architecture you want to test"
+fi
+ARCH=$2
+
 declare -a boards=("pico" "pico_w" "pico2" "pico2_riscv" "pico2_w" "pico2_w_riscv")
 
-
-docker run -d -it --name pico-sdk --mount type=bind,source="${PWD}"/test_poject,target=/home/dev "$1"
+docker run -d -it --platform="${ARCH}" --name pico-sdk --mount type=bind,source="${PWD}"/test_poject,target=/home/dev "$1"
 
 for board in "${boards[@]}"
 do
-    echo "---- $board build test ----"
+    echo "== Run $board build test for $ARCH container arch =="
     docker exec pico-sdk /bin/bash -c "rm -rf /home/dev/build"
     if [[ $board = pico2_riscv ]] ; then
         docker exec -i pico-sdk /bin/bash -c "cd /home/dev && mkdir build && cd build && cmake .. -DPICO_BOARD=pico2 -DPICO_PLATFORM=rp2350-riscv && make -j4"
@@ -26,11 +30,11 @@ do
         docker exec -i pico-sdk /bin/bash -c "cd /home/dev && mkdir build && cd build && cmake .. -DPICO_BOARD=${board} && make -j4"
     fi
     if [ $? != 0 ]; then
-        echo -e "${RED}----- Test failed -----${NC}"
+        echo -e "${RED}== Test failed ==${NC}"
         STATUS=1
         break
     fi
-    echo "${GREEN}----- Test passed -----${NC}"
+    echo "${GREEN}== Test passeed ==${NC}"
 done
 
 docker container kill pico-sdk
